@@ -1,0 +1,57 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysql_database
+
+    volumes:
+      - db_data:/var/lib/mysql
+
+    ports:
+      - 3306
+
+    restart: always
+
+    #networks:
+    #  - wdnetwork
+
+    environment:
+      MYSQL_ROOT_PASSWORD: RootAdmin
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: RootAdmin
+  
+  wordpress:
+
+    depends_on:
+      - db
+    image: wordpress:latest
+    container_name: wb_frontend
+
+    volumes:
+      - wordpress_files:/var/www/html
+
+    ports:
+      - "8000-80"
+    expose:
+      - 80
+      - 22
+      - 8000
+    
+    restart: always
+
+    #networks:
+    #  - wdnetwork
+
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: RootAdmin
+
+volumes:
+  db_data:
+  wordpress_files:
+
+#networks:
+#  wdnetwork:
+#    driver: bridge
