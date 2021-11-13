@@ -1,0 +1,41 @@
+version: '2'
+services:
+  web1:
+    build:
+      context: .docker/web
+      dockerfile: Dockerfile-php-5.6
+    container_name: msweb1
+    ports:
+      - "8080:80"
+    links:
+      - redis:devcache1
+    volumes:
+      - ./web/html:/var/www/html
+      
+  web2:
+    build:
+      context: .docker/web
+      dockerfile: Dockerfile-php-7.0
+    container_name: msweb2
+    ports:
+      - "8180:80"
+    links:
+      - redis:devcache1
+    volumes:
+      - ./web/html:/var/www/html
+
+  web3:
+    build:
+      context: .docker/web
+      dockerfile: Dockerfile-php-7.1
+    container_name: msweb3
+    ports:
+      - "8280:80"
+    links:
+      - redis:devcache1
+    volumes:
+      - ./web/html:/var/www/html
+
+  redis:
+    build: .docker/cache
+    container_name: devcache1
